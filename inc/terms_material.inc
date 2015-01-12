@@ -24,24 +24,39 @@ function terms_materiales(){
 //  Taxonomy dupecheck
 //  https://www.drupal.org/project/taxonomy_dupecheck
 
-function crear_terminos($terms, $vocabularyName){
+function crear_terminos($newTerms, $vocabularyName){
 
 	//get vocabulary id
 
 	if($vocabulary = taxonomy_vocabulary_machine_name_load($vocabularyName)){
 
-		foreach ($terms as $term) {
-
-			// comprovar si exite termino
-			$nom = taxonomy_get_term_by_name($term);
+		foreach ($newTerms as $newTerm) {
 
 
+			// extraemos array con terminos que coinciden
+			$coincidencias = taxonomy_get_term_by_name($newTerm);
 
-			taxonomy_term_save((object) array(
-			  'name' => $term,
-			  'vid' => $vocabulary->vid,
-			));
+			// si exite termino
+			if(count($coincidencias)>0){
+				foreach ($coincidencias as $key => $value) {
 
+					// actualizamos termino
+					taxonomy_term_save((object) array(
+					  'tid' => $key,
+					  'name' => $newTerm,
+					  'vid' => $vocabulary->vid,
+					));
+
+				}
+			
+			}
+			// no existe termino
+			else {
+				taxonomy_term_save((object) array(
+				  'name' => $newTerm,
+				  'vid' => $vocabulary->vid,
+				));
+			}
 
 
 		}
@@ -49,5 +64,7 @@ function crear_terminos($terms, $vocabularyName){
 
 	}
 
-
 }
+
+$listaMateriales = terms_materiales();
+crear_terminos($listaMateriales, 'materiales');

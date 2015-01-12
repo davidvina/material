@@ -154,6 +154,10 @@ function material_enable() {
 	$instancias = material_instances();
 
 	create_fields($campos, $instancias);
+
+	// Load vacances_instances.inc from the vacances module.
+	module_load_include('inc', 'material', 'inc/terms_material');
+
 }
 
 
