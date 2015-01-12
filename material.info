@@ -1,0 +1,17 @@
+name = material
+description = módul per gestionar les vacances
+core = 7.x
+;package = Vacances
+
+
+files[] = material.install
+files[] = material.module
+
+dependencies[] = features
+dependencies[] = number
+dependencies[] = options
+dependencies[] = taxonomy
+
+
+; NEW LINE
+;configure = admin/config/vacances

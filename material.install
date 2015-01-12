@@ -1,0 +1,198 @@
+<?php
+
+/**
+ IMPORTAMOS CAMPOS
+**/
+
+
+// Load vacances_instances.inc from the vacances module.
+module_load_include('inc', 'material', 'inc/vocabularies_material');
+
+// Load vacances_instances.inc from the vacances module.
+module_load_include('inc', 'material', 'inc/fields_material');
+
+// Load vacances_instances.inc from the vacances module.
+module_load_include('inc', 'material', 'inc/field_instances_material');
+
+/**
+ *
+ * Create vocabulary from array.
+ *
+ * @param vocabularies 
+ *   array with the description of de vocabulary
+ */
+
+function create_vocabularies($vocabularies){
+	// http://www.webomelette.com/taxonomy-vocabulary-term-programatically-drupal-7
+
+	foreach ($vocabularies as $key => $vocabulary) {
+
+			// creamos el objeto que nos servira para guardarlo
+			$new_vocab = (object) array(
+			    'name' => $vocabulary['name'],
+			    'description' => $vocabulary['description'],
+			    'machine_name' => $key,
+			  );
+
+			// guardamos el vocabulario
+			if(!taxonomy_vocabulary_machine_name_load('tipos_usuarios')){
+				taxonomy_vocabulary_save($new_vocab);	
+			}
+
+	}	
+}
+
+/**
+ *
+ * Delete vocabulary from array.
+ *
+ * @param vocabularies 
+ *   array with the description of de vocabulary
+ */
+
+
+function delete_vocabularies($vocabularies){
+
+	foreach ($vocabularies as $key => $vocabulary) {
+		$vocab = taxonomy_vocabulary_machine_name_load($key);
+		taxonomy_vocabulary_delete($vocab->vid);
+	}
+
+
+}
+
+
+/**
+ *
+ * Disable a content type
+ *
+ * @param type 
+ *   name of the content type to dissable
+ */
+
+function disable_content_type($type) {
+  $type_info = node_type_load($type);
+  $type_info->module = 'node';
+  $type_info->custom = 1;
+  $type_info->modified = 1;
+  $type_info->locked = 0;
+  $type_info->disabled = 1;
+  node_type_save($type_info);
+}
+
+
+/**
+ *
+ * Disable a content type
+ *
+ * @param fields 
+ *   name of the content type to dissable
+ *
+ * @param instances 
+ *   name of the content type to dissable
+ */
+
+function create_fields($fields, $instances) {
+
+
+	// creamos campos de  nodo y usuario
+	foreach ($fields as $field) {
+		if (!field_info_field($field['field_name'])) {
+			field_create_field($field);
+		};
+		
+	}
+
+	// instanciamos campos
+	foreach ($instances as $instance) {
+		field_create_instance($instance);
+	}
+}
+
+/**
+ *
+ * Disable a content type
+ *
+ * @param fields 
+ *   name of the content type to dissable
+ *
+ */
+function delete_fields($fields) {
+
+    foreach ($fields as $field) {
+
+		field_delete_field($field['field_name']);
+
+		//$instance = field_info_instances('node', 'solicitud_permiso');
+
+		if ($instance = field_info_instance('node', $field['field_name'], 'solicitud_permiso')) {
+			field_delete_instance($instance);
+		}
+
+    }
+
+}
+
+/**
+  * Implement hook_enable()
+  hook_install()
+  */
+function material_enable() {
+	drupal_set_message(t('El modul material ha estat activat.'), 'status');
+
+	// importamos info de vocabularios
+	$new_vocabularies = materiales_vocabularies();
+	// creamos vocabulario nuevo
+	create_vocabularies($new_vocabularies);
+
+	// Ensure the blog node type is available.
+  	node_types_rebuild();
+
+  	// creamos los campos del tipo de nodo
+  	// AÑADIMOS CAMPOS A NODO
+	$campos = material_fields();
+	$instancias = material_instances();
+
+	create_fields($campos, $instancias);
+}
+
+
+
+/**
+ Implement hook_uninstall()
+*/
+/*
+function  material_disable(){
+
+	// importamos info de vocabularios
+	//$new_vocabularies = materiales_vocabularies();
+	// eliminamos vocabulario existente
+	//delete_vocabularies($new_vocabularies);
+
+	// eliminamos tipo de nodo
+	//node_type_delete('solicitud_material');
+
+	disable_content_type('solicitud_material');
+
+}*/
+
+//function  material_uninstall(){
+
+function  material_disable(){
+
+	// importamos info de vocabularios
+	$new_vocabularies = materiales_vocabularies();
+	// eliminamos vocabulario existente
+	delete_vocabularies($new_vocabularies);
+
+	// eliminamos tipo de nodo
+	node_type_delete('solicitud_material');
+
+  	// eliminamos campos
+	$campos = material_fields();
+
+	delete_fields($campos);
+
+}
+
+

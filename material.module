@@ -1,0 +1,141 @@
+<?php
+
+
+/**
+ * Implements hook_help().
+ *
+ * Displays help and module information.
+ *
+ * @param path 
+ *   Which path of the site we're using to display help
+ * @param arg 
+ *   Array that holds the current path as returned from arg() function
+ */
+
+function material_help($path, $arg) {
+  switch ($path) {
+    // Main module help for the block module
+    case 'admin/help#material':
+
+    	// incluye el archivo de ayuda
+    	module_load_include('inc', 'material', 'material_help');
+		
+		return return_help();
+
+  	}
+}
+
+/**
+ * Implements hook_menu().
+ */
+function material_menu() {
+  $items = array();
+
+
+
+  // get name RRHH role
+  $usuariosAcceso = array();
+  $usuariosAcceso[] = 'administrator';
+
+
+  	if($role_RRHH = variable_get('seleccionar_role_RRHH')){
+  		$role_RRHH = user_role_load($role_RRHH);
+  		$usuariosAccesso[] = $role_RRHH->name;
+  	}
+
+
+  	/*
+
+  $items['admin/config/vacances'] = array(
+    'title' => 'Módulo vacances',
+    'description' => 'Configuracio modul vacances',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('vacances_config_form'),
+    'access arguments' => array('access administration pages'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+
+
+    $items['configuracio_vacances'] = array(
+    'title' => 'Configuració vacances',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('vacances_config_form'),
+    'menu_name' => 'navigation',
+    'access callback' => 'menu_example_custom_access',
+    'access arguments' => $usuariosAcceso,
+    'expanded' => TRUE,
+  ); 
+
+  */
+
+  return $items;
+}
+
+
+/**
+ * Determine whether the current user has the role specified.
+ *
+ * @param string $role_name
+ *   The role required for access
+ *
+ * @return bool
+ *   True if the acting user has the role specified.
+ */
+function menu_example_custom_access($role_name) {
+  $access_granted = in_array($role_name, $GLOBALS['user']->roles);
+  return $access_granted;
+}
+
+
+// creamos nodos
+module_load_include('inc', 'material', 'inc/nodes_material');
+
+
+
+/*
+* Implements hook_form_alter().
+*/
+function material_form_alter(&$form, &$form_state, $form_id) {
+
+  switch ($form_id) {
+    
+
+    // formulario configuracion modulo
+    
+    /*
+    case "solicitud_material_node_form":
+
+      drupal_set_message('Año vacaciones actual: ', 'status', FALSE);
+
+      break;
+    */
+    case "taxonomy_form_term":
+
+      //dpm($form);
+      // ocultamos elementos innecesarios
+      $form['description']['#access'] = FALSE;
+      $form['relations']['#access'] = FALSE;
+      
+      // http://www.zyxware.com/articles/3567/drupal-pathauto-drupal-7-how-to-hide-the-url-path-settings-fieldset
+      $form['#after_build'][] = 'custom_after_build';
+      
+      break;
+
+    
+    default:
+      dpm($form_id);
+      // code...
+      break;
+  }
+
+}
+
+
+function custom_after_build($form, &$form_state) {
+  $form['path']['#access'] = FALSE;
+  //$form['menu']['#access'] = FALSE;
+  return ($form); 
+} 
+
+
