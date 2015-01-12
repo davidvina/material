@@ -4,6 +4,7 @@ function terms_materiales(){
 
 	$terms = array();
 
+	$terms[] = "Otros";
 	$terms[] = "Capsa Petita 395x265x191";
 	$terms[] = "Capsa Mitjana 380x320x240";
 	$terms[] = "Capsa Gran 440x365x320";
