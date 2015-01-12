@@ -112,14 +112,49 @@ function material_form_alter(&$form, &$form_state, $form_id) {
     */
     case "taxonomy_form_term":
 
-      //dpm($form);
       // ocultamos elementos innecesarios
       $form['description']['#access'] = FALSE;
       $form['relations']['#access'] = FALSE;
       
       // http://www.zyxware.com/articles/3567/drupal-pathauto-drupal-7-how-to-hide-the-url-path-settings-fieldset
       $form['#after_build'][] = 'custom_after_build';
-      
+    
+      break;
+
+    case "solicitud_material_node_form":
+
+      dpm($form);
+
+      // ocultar campo segun valor de
+
+      // extraer valor de otros
+
+      $listaMateriales = $form['field_material']['und']['#options'];
+
+      foreach ($listaMateriales as $key => $material) {
+        # code...
+        if ($material == "Otros"){
+          $idOtros = $key;
+        }
+
+      }
+
+      dpm($listaMateriales);
+      dpm($idOtros);
+
+
+      // muestra oculta el campo segun lo que selecionemos
+      // http://www.alexweber.com.br/en/articles/conditional-fields-drupal-7-states
+
+      $form['field_otro']['#states'] = array(
+          'visible' => array(
+              ':input[name="field_material[und]"]' => array(
+                  array('value' => $idOtros),
+                  //array('value' => 'secondary'),
+              ),
+          ),
+      );
+
       break;
 
     
