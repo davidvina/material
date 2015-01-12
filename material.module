@@ -88,8 +88,6 @@ function menu_example_custom_access($role_name) {
 }
 
 
-// creamos nodos
-module_load_include('inc', 'material', 'inc/nodes_material');
 
 
 
@@ -123,7 +121,6 @@ function material_form_alter(&$form, &$form_state, $form_id) {
 
     case "solicitud_material_node_form":
 
-      dpm($form);
 
       // ocultar campo segun valor de
 
@@ -139,8 +136,6 @@ function material_form_alter(&$form, &$form_state, $form_id) {
 
       }
 
-      dpm($listaMateriales);
-      dpm($idOtros);
 
 
       // muestra oculta el campo segun lo que selecionemos

@@ -125,7 +125,7 @@ function delete_fields($fields) {
 
 		//$instance = field_info_instances('node', 'solicitud_permiso');
 
-		if ($instance = field_info_instance('node', $field['field_name'], 'solicitud_permiso')) {
+		if ($instance = field_info_instance('node', $field['field_name'], 'solicitud_material')) {
 			field_delete_instance($instance);
 		}
 
@@ -147,6 +147,10 @@ function material_enable() {
 
 	// Ensure the blog node type is available.
   	node_types_rebuild();
+
+	// creamos nodos
+	module_load_include('inc', 'material', 'inc/nodes_material');
+
 
   	// creamos los campos del tipo de nodo
   	// AÑADIMOS CAMPOS A NODO
