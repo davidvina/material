@@ -21,6 +21,16 @@ function terms_materiales(){
 	return $terms;
 }
 
+/**
+ *
+ * Disable a content type
+ *
+ * @param newTerms
+ *   array de términos
+ *
+ * @param vocabularyName 
+ *   string con el nombre del vocabulario
+ */
 
 //  Taxonomy dupecheck
 //  https://www.drupal.org/project/taxonomy_dupecheck
@@ -67,5 +77,7 @@ function crear_terminos($newTerms, $vocabularyName){
 
 }
 
+
+// creamos la taxonomia
 $listaMateriales = terms_materiales();
 crear_terminos($listaMateriales, 'materiales');
