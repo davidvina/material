@@ -162,6 +162,10 @@ function material_enable() {
 	// Load vacances_instances.inc from the vacances module.
 	module_load_include('inc', 'material', 'inc/terms_material');
 
+
+	// variable para guardar fecha de envio
+	$dia = date('d-m');
+	variable_set('fecha_material_mail', $dia);
 }
 
 

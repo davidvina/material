@@ -229,14 +229,25 @@ function material_form_validate($form, &$form_state) {
 */
 
 
-function material_node_insert($node){
+// comprovar hora
 
-  if ($node->type == 'solicitud_material') {
+function enviarMail(){
+    $dia = date('d-m');
+  
+    if($dia != variable_get('fecha_material_mail')){
 
-    // incluimos fichero de envio de mails
-    module_load_include('inc', 'material', 'material_email');
+      // incluimos fichero de envio de mails
+      module_load_include('inc', 'material', 'material_email');
+      variable_set('fecha_material_mail', $dia);
+    }
+}
 
-    
 
-  }
+
+
+function material_cron(){
+
+  enviarMail();
+
+   
 }

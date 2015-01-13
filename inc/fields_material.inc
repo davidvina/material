@@ -8,22 +8,6 @@
 function material_fields() {
   $field_bases = array();
 
-  // Exported field_base: 'field_cantidad'
-  $field_bases['field_cantidad'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_cantidad',
-    'foreign keys' => array(),
-    'indexes' => array(),
-    'locked' => 0,
-    'module' => 'number',
-    'settings' => array(),
-    'translatable' => 0,
-    'type' => 'number_integer',
-  );
-
   // Exported field_base: 'field_material'
   $field_bases['field_material'] = array(
     'active' => 1,
@@ -85,6 +69,22 @@ function material_fields() {
     ),
     'translatable' => 0,
     'type' => 'text',
+  );
+
+    // Exported field_base: 'field_cantidad'
+  $field_bases['field_cantidad'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_cantidad',
+    'foreign keys' => array(),
+    'indexes' => array(),
+    'locked' => 0,
+    'module' => 'number',
+    'settings' => array(),
+    'translatable' => 0,
+    'type' => 'number_integer',
   );
 
   return $field_bases;
