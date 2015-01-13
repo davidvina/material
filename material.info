@@ -7,7 +7,7 @@ core = 7.x
 files[] = material.install
 files[] = material.module
 
-dependencies[] = features
+;dependencies[] = features
 dependencies[] = number
 dependencies[] = options
 dependencies[] = taxonomy
