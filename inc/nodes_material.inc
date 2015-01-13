@@ -47,6 +47,7 @@ function crear_tipos_nodo(){
       'title_label' => $t('Titulo'),
       'description' => $t('Para solicitar material.'),
       'custom' => FALSE,
+      //'has_title' => FALSE,
       //'modified' => 1,
       //'locked' => 0,
     ),

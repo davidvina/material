@@ -33,41 +33,16 @@ function material_menu() {
 
 
 
-  // get name RRHH role
-  $usuariosAcceso = array();
-  $usuariosAcceso[] = 'administrator';
-
-
-  	if($role_RRHH = variable_get('seleccionar_role_RRHH')){
-  		$role_RRHH = user_role_load($role_RRHH);
-  		$usuariosAccesso[] = $role_RRHH->name;
-  	}
-
-
-  	/*
-
-  $items['admin/config/vacances'] = array(
-    'title' => 'Módulo vacances',
-    'description' => 'Configuracio modul vacances',
+  $items['admin/config/material'] = array(
+    'title' => 'Módulo material',
+    'description' => 'Configuracio modul material',
     'page callback' => 'drupal_get_form',
-    'page arguments' => array('vacances_config_form'),
+    'page arguments' => array('material_config_form'),
     'access arguments' => array('access administration pages'),
     'type' => MENU_NORMAL_ITEM,
   );
 
 
-
-    $items['configuracio_vacances'] = array(
-    'title' => 'Configuració vacances',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('vacances_config_form'),
-    'menu_name' => 'navigation',
-    'access callback' => 'menu_example_custom_access',
-    'access arguments' => $usuariosAcceso,
-    'expanded' => TRUE,
-  ); 
-
-  */
 
   return $items;
 }
@@ -88,8 +63,8 @@ function menu_example_custom_access($role_name) {
 }
 
 
-
-
+// Incluimos menu de administración
+module_load_include('inc', 'material', 'material_config');
 
 /*
 * Implements hook_form_alter().
@@ -120,7 +95,7 @@ function material_form_alter(&$form, &$form_state, $form_id) {
       break;
 
     case "solicitud_material_node_form":
-
+       dpm($form);
 
       // ocultar campo segun valor de
 
@@ -145,10 +120,26 @@ function material_form_alter(&$form, &$form_state, $form_id) {
           'visible' => array(
               ':input[name="field_material[und]"]' => array(
                   array('value' => $idOtros),
-                  //array('value' => 'secondary'),
               ),
           ),
+          'required' => array(
+              ':input[name="field_material[und]"]' => array(
+                  array('value' => $idOtros),
+              ),
+          ),
+
       );
+
+
+
+      // hide title
+      $form['title']['#required'] = FALSE;
+      // Remove the next line if you still want the title field to be visible
+      $form['title']['#type'] = 'hidden';
+      //$form['title']['#default_value'] = 'hola';
+
+      //custom submit callback
+      //$form['#submit'][] = 'material_new_edit_form_submit';
 
       break;
 
@@ -169,3 +160,36 @@ function custom_after_build($form, &$form_state) {
 } 
 
 
+// Register View API information.
+// Hace que se cargue el archivo mymodule.views_default.inc
+
+function material_views_api() {
+    return array (
+      'api' => 3.0,
+      );
+}
+
+
+/**
+ CALCULAR TITULO
+
+*/
+function material_node_presave($node){
+  if ($node->type === 'solicitud_material'){
+    dpm($node);
+
+    $term = $node->field_material['und'][0]['tid'];
+    $term = taxonomy_term_load($term);
+    $term = $term->name;
+    
+    if($term == "Otros"){
+      $node->title =  $node->field_otro['und'][0]['value'];
+    } else {
+      $node->title = $term;
+    }
+
+
+
+
+  }
+}

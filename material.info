@@ -12,6 +12,10 @@ dependencies[] = number
 dependencies[] = options
 dependencies[] = taxonomy
 
+dependencies[] = views
+dependencies[] = views_ui
+dependencies[] = views_bulk_operations
+
 
 ; NEW LINE
-;configure = admin/config/vacances
+configure = admin/config/material
