@@ -2,7 +2,7 @@
 function return_help(){
 	$mesage = "";
 
-	$mesage .= "<h3>Ayuda para el modulo vacances</h3>";
+	$mesage .= "<h3>Ayuda para el modulo material</h3>";
 	$mesage .= "<h5>Como configurar el modulo</h5>";
 	$mesage .= "<p>1 .- </p>";
 	$mesage .= "<hr />";
