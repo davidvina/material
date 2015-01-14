@@ -12,6 +12,8 @@ dependencies[] = number
 dependencies[] = options
 dependencies[] = taxonomy
 
+dependencies[] = vppr
+
 dependencies[] = views
 dependencies[] = views_ui
 dependencies[] = views_bulk_operations

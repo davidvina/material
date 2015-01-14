@@ -140,7 +140,9 @@ function material_form_alter(&$form, &$form_state, $form_id) {
     default:
       
       // muestra el id de todos los formularios ideal para modificarlos en esta funcion
-      // dpm($form_id);
+      dpm($form_id);
+
+      dpm($form);
       break;
   }
 
@@ -239,6 +241,8 @@ function enviarMail(){
       // incluimos fichero de envio de mails
       module_load_include('inc', 'material', 'material_email');
       variable_set('fecha_material_mail', $dia);
+    } else {
+      drupal_set_message(t('No se ha enviado el mail.'), 'warning');
     }
 }
 
